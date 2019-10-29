@@ -1,23 +1,3 @@
-# Stanford CS 106 B/X Qt Creator project file
-#
-# This file specifies the information about your project to Qt Creator.
-# You should not need to modify this file to complete your assignment.
-#
-# If you need to add files or folders to your project, we recommend the following:
-# - close Qt Creator.
-# - delete your ".pro.user" file and "build_xxxxxxx" directory.
-# - place the new files/folders into your project directory.
-# - re-open and "Configure" your project again.
-#
-# @author Marty Stepp, Reid Watson, Rasmus Rygaard, Jess Fisher, etc.
-# @version 2014/11/13
-# - fixes related to generating stack traces
-# - support for putting testing files in a src/test/ folder (used in development)
-# @version 2014/11/05
-# - improved/fixed flags for exception-handling
-# @version 2014/10/31
-# - standard autograder-compatible version; should work with all assignments and graders.
-
 TEMPLATE = app
 
 # make sure we do not accidentally #include files placed in 'resources'
@@ -47,8 +27,6 @@ win32 {
     }
 }
 
-# include various source .cpp files and header .h files in the build process
-# (student's source code can be put into project root, or src/ subfolder)
 SOURCES += $$PWD/lib/StanfordCPPLib/*.cpp
 SOURCES += $$PWD/lib/StanfordCPPLib/stacktrace/*.cpp
 exists($$PWD/src/test/*.cpp) {
@@ -122,7 +100,6 @@ DEFINES += SPL_CONSOLE_EXIT_ON_CLOSE
 DEFINES += SPL_VERIFY_JAVA_BACKEND_VERSION
 DEFINES += SPL_PROJECT_VERSION=20141113
 
-# directories examined by Qt Creator when student writes an #include statement
 INCLUDEPATH += $$PWD/lib/StanfordCPPLib/
 INCLUDEPATH += $$PWD/lib/StanfordCPPLib/private/
 INCLUDEPATH += $$PWD/lib/StanfordCPPLib/stacktrace/
@@ -244,53 +221,6 @@ macx {
 }
 
 # ================== END GENERAL PROJECT SETTINGS ==================
-
-# settings specific to CS 106 B/X auto-grading programs; do not modify
-exists($$PWD/lib/autograder/*.cpp) {
-    # include the various autograder source code and libraries in the build process
-    SOURCES += $$PWD/lib/autograder/*.cpp
-    HEADERS += $$PWD/lib/autograder/*.h
-    INCLUDEPATH += $$PWD/lib/StanfordCPPLib/private/
-    INCLUDEPATH += $$PWD/lib/autograder/
-    DEFINES += SPL_AUTOGRADER_MODE
-
-    # a check to ensure that required autograder resources are present in this project
-    !exists($$PWD/res/autograder/pass.gif) {
-        message(*** Stanford library cannot find its image files pass.gif, fail.gif, etc.!)
-        message(*** This project cannot run without those images present.)
-        message(*** Place those files into your res/autograder/ folder and try again.)
-        error(Exiting.)
-    }
-
-    # copy autograder resource files into build folder
-    copyResources.input += $$files($$PWD/res/autograder/*)
-    OTHER_FILES += $$files(res/autograder/*)
-
-    !win32 {
-        copyToDestdir($$files($$PWD/res/autograder/*))
-    }
-    win32 {
-        copyToDestdir($$PWD/res/autograder)
-    }
-
-    # copy source code into build folder so it can be analyzed by style checker
-    exists($$PWD/src/*.cpp) {
-        copyResources.input += $$files($$PWD/src/*.cpp)
-        copyToDestdir($$files($$PWD/src/*.cpp))
-    }
-    exists($$PWD/*.cpp) {
-        copyResources.input += $$files($$PWD/*.cpp)
-        copyToDestdir($$files($$PWD/*.cpp))
-    }
-    exists($$PWD/src/*.h) {
-        copyResources.input += $$files($$PWD/src/*.h)
-        copyToDestdir($$files($$PWD/src/*.h))
-    }
-    exists($$PWD/*.h) {
-        copyResources.input += $$files($$PWD/*.h)
-        copyToDestdir($$files($$PWD/*.h))
-    }
-}
 
 macx{
  LIBS += -framework CoreAudio -framework AudioToolbox -framework AudioUnit -framework Carbon
